@@ -1,4 +1,4 @@
-# to_mbox.rb
+# to_mbox.bmm_mod.rb
 #     
 #	@Author Josh Holt
 # @Date 02.09.2009
@@ -42,7 +42,7 @@ module Backup
   				result = []
   				
   				@lines.each do |line|
-  					line =~ /^>*From / then line = ">" + line end
+  					if line =~ /^>*From / then line = ">" + line end
   					result.push(line)
   				end
   				

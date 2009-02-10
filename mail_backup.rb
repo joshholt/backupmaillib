@@ -22,7 +22,7 @@ class BackupMyMail
   attr_accessor :email, :username, :password, :port, :ssl, :server, :backup_dir
   
 	modules_path = File.join(File.dirname(__FILE__),'lib','modules')
-	module_files = Dir["#{modules_path}/*.mod.rb"]
+	module_files = Dir["#{modules_path}/*.bmm_mod.rb"]
 	module_files.each { |modFile| require modFile }
 
 	if module_files.size > 0
