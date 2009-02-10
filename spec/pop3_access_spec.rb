@@ -1,34 +1,60 @@
-#!/usr/local/bin/ruby
-modules_path = File.join('lib','modules')
-module_files = Dir["#{modules_path}/*.bmm_mod.rb"]
-module_files.each { |modFile| require modFile }
-require 'net/pop'
+#
+# pop3_access_spec.rb
+#
+# @Author Josh Holt
+# @Date 	02.10.2009
+#
+#	@Purpose --> This spec file will test the pop3 access with the provided info
+#******************************************************************************
 
-include Backup::Mail
+require File.join("./","mail_backup.rb")
 
-describe PopAccount do
+describe BackupMyMail do
   
   before(:each) do
-    @account = PopAccount.new({
+    @account = BackupMyMail.new({
       :server   => "pop.gmail.com",
       :email    => "joshholt.testaccount@gmail.com",
       :username => "joshholt.testaccount@gmail.com",
+      :password => "I$tanB00L",
       :port     => 995,
       :ssl      => true
     })
   end
   
-  describe "When Incorrect Information is given" do
+  describe "When incorrect login information is given" do
     it "should not be authenticated" do
       @account.password = "InvalidPassword"
       @account.should_not be_authenticated
     end
   end
   
-  describe "When Correct Information is given" do
-    it "should be authenticated" do
-      @account.password = "I$tanB00L"
-      @account.should be_authenticated
-    end
+  
+  describe "When incorrect server information is given" do
+  	it "should not be authenticated" do
+  		@account.server = "popper.gmail.com"
+  		@account.should_not be_authenticated
+  	end
+  end
+  
+  describe "When incorrect port is given" do
+  	it "should not be authenticated" do
+  		@account.port = 996
+  		@account.should_not be_authenticated
+  	end
+  end
+  
+  describe "When SSL is required and port is 110" do
+  	it "should not be authenticated" do
+  		@account.ssl  = true
+  		@account.port = 110
+  		@account.should_not be_authenticated
+  	end
+  end
+  
+  describe "When all account information is correct" do
+  	it "should be authenticated" do
+  		@account.should be_authenticated
+  	end
   end
 end
